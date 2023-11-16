@@ -1,0 +1,62 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false  # true by default
+
+# (Optional) Log information
+# ---
+# Writing Logs to a File
+#log:
+#  format: json
+#  level: DEBUG
+#  filePath: "/var/log/traefik/traefik.log"
+
+# (Optional) Accesslog
+# ---
+#accesslog:
+#  format: common  # common, json, logfmt
+#  filePath: /var/log/traefik/access.log
+
+# (Optional) Enable API and Dashboard
+# ---
+api:
+ dashboard: true  # true by default
+ insecure: true
+
+# Entry Points configuration
+# ---
+entryPoints:
+  web:
+    address: :80
+    # (Optional) Redirect to HTTPS
+    # ---
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: :443
+
+# (Certificate) Resolvers configuration here (Cloudflare)
+# ---
+#certificatesResolvers:
+#  cf:
+#    acme:
+#      email: cloudflare-email
+#      storage: acme.json
+#      dnsChallenge:
+#        provider: cloudflare
+#        resolvers:
+#          - "1.1.1.1:53"
+#          - "1.0.0.1:53"
+
+providers:
+  docker:
+    exposedByDefault: false  # Default is true
+
+# (Optional) File configuration
+# ---
+#  file:
+#    directory: /etc/traefik/
+#    watch: true # watch config file for changes - otherwise you have to redeploy traefik to reload config

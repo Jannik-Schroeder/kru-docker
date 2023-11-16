@@ -1,0 +1,29 @@
+version: '3'
+services:
+  kru-docker:
+    image: ghcr.io/jannik-schroeder/kru-docker:master
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kru-docker-secure.rule=Host(`deine-domain.de`)"
+      - "traefik.http.routers.kru-docker-secure.entrypoints=websecure"
+      - "traefik.http.routers.kru-docker-secure.tls=true"
+    ports:
+      - "5000:5000"
+
+# Traefik reverse proxy
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    restart: always
+# (Optional) Enable cloudflare ACME challenge
+#    environment:
+#      - CF_API_EMAIL=cloudfalre-email
+#      - CF_API_KEY=globale-api-key
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # The Web UI (enabled by --api.insecure=true) - traefik/traefik.yaml here
+    volumes:
+      - ./traefik:/etc/traefik
+      - /var/log/traefik:/var/log/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
