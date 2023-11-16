@@ -1,15 +1,29 @@
+# Stage 1: Build
+FROM python:3.7.4-slim-buster as builder
+
+# Set the working directory in the builder stage
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --user -r requirements.txt
+
+# Stage 2: Production Build
 FROM python:3.7.4-slim-buster
 
 # Set the working directory to /app
 WORKDIR /app
 
+# Copy the virtual environment from the builder stage
+COPY --from=builder /root/.local /root/.local
+
 # Copy the current directory contents into the container at /app
 COPY . .
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+# Make sure scripts in .local are usable:
+ENV PATH=/root/.local:$PATH
 
-# Make port 80 available to the world outside this container
+# Make port 5000 available to the world outside this container
 EXPOSE 5000
 
 CMD [ "python", "app.py" ]
