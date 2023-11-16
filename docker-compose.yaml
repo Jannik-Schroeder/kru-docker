@@ -10,7 +10,8 @@ services:
     ports:
       - "5000:5000"
 
-# Traefik reverse proxy
+# Traefik reverse proxy (recommended)
+# ---
   traefik:
     image: "traefik:latest"
     container_name: "traefik"
@@ -27,3 +28,18 @@ services:
       - ./traefik:/etc/traefik
       - /var/log/traefik:/var/log/traefik
       - /var/run/docker.sock:/var/run/docker.sock:ro
+  
+# Nginx reverse proxy (alternative to traefik)
+# ---
+#    nginx:
+#      image: nginx:latest
+#      container_name: nginx
+#      restart: always
+#      ports:
+#        - "80:80"
+#        - "443:443"
+#      volumes:
+#        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#        - /var/log/nginx:/var/log/nginx
+#        - ./certs/example.crt:/etc/ssl/certs/example.crt:ro
+#        - ./certs/example.key:/etc/ssl/private/example.key:ro
