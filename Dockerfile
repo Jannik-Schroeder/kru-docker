@@ -4,8 +4,10 @@ FROM python:3.7.4-slim-buster as builder
 # Set the working directory in the builder stage
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
+# Copy the requirements file
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --user -r requirements.txt
 
 # Stage 2: Production Build
@@ -26,4 +28,5 @@ ENV PATH=/root/.local:$PATH
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-CMD [ "python", "app.py" ]
+# Start Gunicorn and serve the app
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
