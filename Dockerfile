@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 
 # Startet die Flask-Anwendung
-CMD ["python", "app.py", "--host=0.0.0.0"]
+CMD ["python", "app.py"]
