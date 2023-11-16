@@ -7,8 +7,6 @@ services:
       - "traefik.http.routers.kru-docker-secure.rule=Host(`deine-domain.de`)"
       - "traefik.http.routers.kru-docker-secure.entrypoints=websecure"
       - "traefik.http.routers.kru-docker-secure.tls=true"
-    ports:
-      - "5000:5000"
 
 # Traefik reverse proxy (recommended)
 # ---
